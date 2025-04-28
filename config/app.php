@@ -185,4 +185,7 @@ return [
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
 
+    //楽天APIのアプリID
+    'rakuten_app_id' => env('RAKUTEN_APPLICATION_ID'),
+
 ];
