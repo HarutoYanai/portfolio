@@ -8,13 +8,13 @@
     <div class="">
         @foreach ($recipes as $recipe)
             <div class="">
-                <a href="{{ $recipe['url'] }}">
-                    <h2>{{ $recipe['title'] }} </h2>
+                <a href="/search/{{ $recipe['recipe_id'] }}">
+                    <h2>{{ $recipe['recipe_title'] }} </h2>
                 </a>
             </div>
             <div class="">
-                <a href="{{ $recipe['url'] }}">
-                    <img src="{{ $recipe['image'] }}">
+                <a href="/search/{{ $recipe['recipe_id'] }}">
+                    <img src="{{ $recipe['image_url'] }}">
                 </a>
             </div>
         @endforeach
