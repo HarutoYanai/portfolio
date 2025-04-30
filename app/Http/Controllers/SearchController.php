@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Category;
+use App\Models\RecipeHistory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cache;
@@ -38,19 +40,48 @@ class SearchController extends Controller
                 
                 foreach($response as $result) {
                     $recipes[] = [
+                    'user_id' => auth()->id(),
                     'ingredient' => $request['ingredient'],
-                    'title' => $result['recipeTitle'],
-                    'url' => $result['recipeUrl'],
-                    'image' => $result['mediumImageUrl'],
+                    'recipe_id' => $result['recipeId'],
+                    'recipe_title' => $result['recipeTitle'],
+                    'recipe_url' => $result['recipeUrl'],
+                    'image_url' => $result['mediumImageUrl'],
+                    //'recipe_description' => $result['recipeDescription'],
+                    'recipe_material' => $result['recipeMaterial'],
+                    //'recipe_indication' =>$result['recipeCost'],
+                    //'recipe_cost' => $result['recipeCost'],
+                    //'recipe_publishday' => $result['recipePublishday'],
+                    'rank' => $result['rank'],
                     ];
                 }
-    
+                //dd($recipes);
+                
+                //recipe_hitoriesテーブルに保存
+                foreach($recipes as $data) {
+                    //データが既に格納されているかチェック
+                    $existing = RecipeHistory::where('recipe_id', $data['recipe_id'])->first();
+                    
+                    if($existing) {
+                        $existing->fill($data)->update();
+                    } else {
+                        $recipeHistory = new RecipeHistory;
+                        $recipeHistory->fill($data)->save();
+                    }
+                }
+                
+                //view表示
                 return view('project.index')->with('recipes', $recipes);
-                //var_dump($recipes);
+                
             } else  {
                 echo 'Error:'. $response->getMessage();
             }
         }
+    }
+
+    public function show(RecipeHistory $recipeHistory) {
+        //dd($recipeHistory);
+        return view('project.view')->with('recipe', $recipeHistory);
+       
     }
 
 }

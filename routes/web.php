@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SearchController;
 use Illuminate\Support\Facades\Route;
+//use App\Models\RecipeHistory;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +27,7 @@ Route::get('/dashboard', function () {
 Route::controller(SearchController::class)->middleware(['auth'])->group(function(){
     Route::get('/', 'top')->name('top');
     Route::get('/search', 'search')->name('search');
+    Route::get('/search/{recipeHistory}', 'show')->name('show');
 });
 
 
